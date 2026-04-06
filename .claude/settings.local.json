@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(npm install)",
+      "Bash(npx next build)",
+      "Bash(npm install:*)",
+      "Bash(curl:*)",
+      "Bash(start http://localhost:3009/v2)",
+      "Bash(start http://localhost:3009)"
+    ]
+  }
+}
