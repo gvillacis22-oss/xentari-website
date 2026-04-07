@@ -137,8 +137,8 @@ export function ProcessV2() {
                       className={cn(
                         "relative bg-background-card/80 backdrop-blur-sm border rounded-2xl p-8 text-center transition-all duration-300 h-full overflow-hidden",
                         isActive
-                          ? "border-accent"
-                          : "border-border hover:border-accent/50"
+                          ? "border-[#FF6B35]"
+                          : "border-[#FF6B35]/20 hover:border-[#FF6B35]/40"
                       )}
                       animate={
                         isActive

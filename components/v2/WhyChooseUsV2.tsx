@@ -101,7 +101,7 @@ export function WhyChooseUsV2() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
-                className="group relative bg-background-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 overflow-hidden hover:border-accent/50 transition-all duration-300"
+                className="group relative bg-background-card/80 backdrop-blur-sm border border-[#FF6B35]/20 rounded-2xl p-8 overflow-hidden hover:border-[#FF6B35]/40 transition-all duration-300"
               >
                 {/* Hover gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />

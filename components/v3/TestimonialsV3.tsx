@@ -1,7 +1,5 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import { Quote } from "lucide-react";
 
 const testimonials = [
@@ -22,37 +20,26 @@ const testimonials = [
   },
 ];
 
-export function TestimonialsV2() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
-
+export function TestimonialsV3() {
   return (
-    <section ref={sectionRef} className="bg-[#0F0F11] py-20 md:py-28">
+    <section className="bg-[#0F0F11] py-20 md:py-28">
       <div className="container mx-auto px-6">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-14"
-        >
+        <div className="text-center mb-14">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             What Our Clients Say
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Real results from real people we've helped
           </p>
-        </motion.div>
+        </div>
 
-        {/* Testimonial cards - 3 card grid */}
+        {/* Testimonial cards */}
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {testimonials.map((testimonial, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-[#0A0A0B] border border-[#FF6B35]/20 rounded-2xl p-6 relative hover:border-[#FF6B35]/40 transition-all duration-300"
+              className="bg-[#0A0A0B] border border-white/[0.06] rounded-2xl p-6 relative"
             >
               {/* Quote icon */}
               <div className="w-10 h-10 rounded-lg bg-[#FF6B35]/10 flex items-center justify-center mb-4">
@@ -80,7 +67,7 @@ export function TestimonialsV2() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

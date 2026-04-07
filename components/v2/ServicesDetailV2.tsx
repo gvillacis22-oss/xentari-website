@@ -139,7 +139,7 @@ export function ServicesDetailV2() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.1 + areaIndex * 0.1 }}
-                className="bg-background-card border border-white/[0.06] rounded-2xl overflow-hidden"
+                className="bg-background-card border border-[#FF6B35]/20 rounded-2xl overflow-hidden hover:border-[#FF6B35]/40 transition-all duration-300"
               >
                 {/* Area header */}
                 <div className="p-6 md:p-8 border-b border-white/[0.06]">
@@ -170,7 +170,7 @@ export function ServicesDetailV2() {
                       return (
                         <div
                           key={item.title}
-                          className="p-5 bg-background-elevated/50 rounded-xl border border-white/[0.04]"
+                          className="p-5 bg-background-elevated/50 rounded-xl border border-[#FF6B35]/20 hover:border-[#FF6B35]/40 transition-all duration-300"
                         >
                           <div className="w-10 h-10 rounded-lg bg-white/[0.04] flex items-center justify-center mb-4">
                             <ItemIcon className="w-5 h-5 text-text-secondary" />

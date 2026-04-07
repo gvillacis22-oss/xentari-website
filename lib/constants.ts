@@ -24,9 +24,18 @@ export const navLinks = [
     label: "Services",
     href: "/services",
     children: [
-      { label: "Individual & Family Plans", href: "/services/individual-family" },
-      { label: "Business Group Benefits", href: "/services/business-benefits" },
+      { label: "Health Insurance", href: "/services/health-insurance" },
+      { label: "Life Insurance", href: "/services/life-insurance" },
+      { label: "Business Benefits", href: "/services/business-benefits" },
       { label: "Tax Structuring", href: "/services/tax-structuring" },
+      { label: "Medicare & Retirement", href: "/services/medicare-retirement" },
+    ],
+  },
+  {
+    label: "Tools",
+    href: "/tools",
+    children: [
+      { label: "Retirement Calculator", href: "/calculator" },
     ],
   },
   { label: "About", href: "/about" },
@@ -37,10 +46,14 @@ export const navLinks = [
 // Footer Navigation
 export const footerLinks = {
   services: [
-    { label: "Individual Plans", href: "/services/individual-family" },
-    { label: "Family Plans", href: "/services/individual-family" },
+    { label: "Health Insurance", href: "/services/health-insurance" },
+    { label: "Life Insurance", href: "/services/life-insurance" },
     { label: "Business Benefits", href: "/services/business-benefits" },
     { label: "Tax Structuring", href: "/services/tax-structuring" },
+    { label: "Medicare & Retirement", href: "/services/medicare-retirement" },
+  ],
+  tools: [
+    { label: "Retirement Calculator", href: "/calculator" },
   ],
   company: [
     { label: "About Us", href: "/about" },

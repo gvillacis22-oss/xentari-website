@@ -48,6 +48,27 @@
            hover:border-accent hover:shadow-glow;
   }
 
+  /* Fire-orange bordered card - DESIGN SYSTEM STANDARD */
+  /* Use this for all gray boxes, cards, and containers */
+  .card-orange-border {
+    @apply rounded-2xl border border-[#FF6B35]/20
+           transition-all duration-300
+           hover:border-[#FF6B35]/40;
+  }
+
+  /* Variant with background */
+  .card-orange-border-dark {
+    @apply rounded-2xl border border-[#FF6B35]/20 bg-[#111113]
+           transition-all duration-300
+           hover:border-[#FF6B35]/40;
+  }
+
+  .card-orange-border-darker {
+    @apply rounded-2xl border border-[#FF6B35]/20 bg-[#0A0A0B]
+           transition-all duration-300
+           hover:border-[#FF6B35]/40;
+  }
+
   /* Text gradient */
   .text-gradient {
     @apply bg-gradient-accent bg-clip-text text-transparent;

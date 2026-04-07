@@ -110,7 +110,7 @@ export function StrategyPillarsV2() {
               >
                 {/* Card */}
                 <div
-                  className="relative h-full bg-background-card border border-white/[0.06] rounded-2xl p-8 transition-all duration-300 hover:border-white/[0.12]"
+                  className="relative h-full bg-background-card border border-[#FF6B35]/20 rounded-2xl p-8 transition-all duration-300 hover:border-[#FF6B35]/40"
                 >
 
                   {/* Icon */}

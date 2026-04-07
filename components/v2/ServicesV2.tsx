@@ -103,8 +103,8 @@ export function ServicesV2() {
                 className={cn(
                   "group relative rounded-2xl border transition-all duration-500 overflow-hidden",
                   isActive
-                    ? "border-accent bg-accent/5 scale-[1.02]"
-                    : "border-border bg-background-card/80 backdrop-blur-sm hover:border-accent/50"
+                    ? "border-[#FF6B35] bg-[#FF6B35]/5 scale-[1.02]"
+                    : "border-[#FF6B35]/20 bg-background-card/80 backdrop-blur-sm hover:border-[#FF6B35]/40"
                 )}
                 onMouseEnter={() => setActiveService(service.id)}
                 onMouseLeave={() => setActiveService(null)}

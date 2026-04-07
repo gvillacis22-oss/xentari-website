@@ -7,7 +7,10 @@
       "Bash(npm install:*)",
       "Bash(curl:*)",
       "Bash(start http://localhost:3009/v2)",
-      "Bash(start http://localhost:3009)"
+      "Bash(start http://localhost:3009)",
+      "Bash(Get-Process node -ErrorAction SilentlyContinue)",
+      "Bash(Stop-Process -Force)",
+      "Bash(start http://localhost:3000)"
     ]
   }
 }

@@ -67,7 +67,7 @@ export function GrowthChart({ data, targetValue, retirementAge }: GrowthChartPro
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-background-surface border border-white/[0.06] rounded-xl p-5"
+      className="bg-background-surface border border-[#FF6B35]/20 rounded-xl p-5 hover:border-[#FF6B35]/40 transition-all duration-300"
     >
       <div className="flex items-center justify-between mb-4">
         <h4 className="text-sm text-text-muted uppercase tracking-wider">

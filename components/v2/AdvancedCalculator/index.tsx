@@ -260,7 +260,7 @@ export function AdvancedCalculator() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="bg-background-surface border border-white/[0.06] rounded-3xl overflow-hidden"
+          className="bg-background-surface border border-[#FF6B35]/20 rounded-3xl overflow-hidden hover:border-[#FF6B35]/40 transition-all duration-300"
           style={{ boxShadow: "0 25px 80px -20px rgba(0, 0, 0, 0.6)" }}
         >
           {/* Header */}

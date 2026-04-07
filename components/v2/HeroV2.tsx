@@ -1,10 +1,18 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, Suspense } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { siteConfig } from "@/lib/constants";
+import { ArrowRight, Calendar, ChevronDown } from "lucide-react";
+import dynamic from "next/dynamic";
+
+// Dynamically import the 3D globe to prevent SSR issues
+const HolographicGlobe = dynamic(
+  () => import("./HolographicGlobe").then((mod) => ({ default: mod.HolographicGlobe })),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
 
 export function HeroV2() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -14,151 +22,195 @@ export function HeroV2() {
   const contentY = useTransform(scrollY, [0, 500], [0, 30]);
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
 
-  const scrollToCalculator = () => {
-    const calculator = document.getElementById("calculator");
-    if (calculator) {
-      calculator.scrollIntoView({ behavior: "smooth", block: "start" });
-    } else {
-      // Fallback: scroll to approximate position
-      window.scrollTo({ top: window.innerHeight * 2, behavior: "smooth" });
-    }
-  };
-
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[100vh] flex items-center justify-center overflow-hidden"
+      className="relative min-h-[90vh] flex items-center justify-center overflow-hidden"
     >
-      {/* Background layers */}
-      <div className="absolute inset-0 bg-background" />
+      {/* === LAYERED BACKGROUND SYSTEM === */}
 
-      {/* Subtle gradient overlay */}
+      {/* Layer 1: Base - near black */}
+      <div className="absolute inset-0 bg-[#050507]" />
+
+      {/* Layer 2: Radial gradient - darker edges, lighter center-right */}
       <div
         className="absolute inset-0"
         style={{
-          background: "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 107, 53, 0.04) 0%, transparent 50%)",
-        }}
-      />
-
-      {/* Grid pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+          background: `
+            radial-gradient(
+              ellipse 80% 70% at 60% 50%,
+              #16161A 0%,
+              #111113 30%,
+              #0A0A0C 60%,
+              #050507 100%
+            )
           `,
-          backgroundSize: "60px 60px",
-          maskImage: "radial-gradient(ellipse 60% 50% at 50% 40%, black 0%, transparent 70%)",
-          WebkitMaskImage: "radial-gradient(ellipse 60% 50% at 50% 40%, black 0%, transparent 70%)",
         }}
       />
 
-      {/* Noise texture */}
+      {/* Layer 3: Secondary depth gradient - top to bottom */}
       <div
-        className="absolute inset-0 opacity-[0.015] pointer-events-none"
+        className="absolute inset-0"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          background: `
+            linear-gradient(
+              180deg,
+              rgba(22, 22, 26, 0.4) 0%,
+              transparent 40%,
+              transparent 60%,
+              rgba(5, 5, 7, 0.6) 100%
+            )
+          `,
         }}
       />
 
-      {/* Vignette */}
+      {/* === GLOBE GLOW LAYERS === */}
+
+      {/* Glow Layer 1: Large soft orange ambient glow - behind globe */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: "50%",
+          left: "55%",
+          transform: "translate(-50%, -50%)",
+          width: "900px",
+          height: "900px",
+          background: "radial-gradient(circle, rgba(255, 107, 53, 0.12) 0%, rgba(255, 107, 53, 0.04) 40%, transparent 70%)",
+          filter: "blur(60px)",
+        }}
+      />
+
+      {/* Glow Layer 2: Focused orange core glow */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: "45%",
+          left: "58%",
+          transform: "translate(-50%, -50%)",
+          width: "500px",
+          height: "500px",
+          background: "radial-gradient(circle, rgba(255, 107, 53, 0.18) 0%, rgba(255, 107, 53, 0.06) 50%, transparent 70%)",
+          filter: "blur(40px)",
+        }}
+      />
+
+      {/* Glow Layer 3: Subtle white/neutral highlight for sphere definition */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: "42%",
+          left: "60%",
+          transform: "translate(-50%, -50%)",
+          width: "400px",
+          height: "400px",
+          background: "radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 60%)",
+          filter: "blur(30px)",
+        }}
+      />
+
+      {/* Glow Layer 4: Very subtle edge highlight */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: "48%",
+          left: "62%",
+          transform: "translate(-50%, -50%)",
+          width: "600px",
+          height: "600px",
+          background: "radial-gradient(ellipse 60% 80% at 50% 50%, rgba(255, 140, 90, 0.08) 0%, transparent 50%)",
+          filter: "blur(50px)",
+        }}
+      />
+
+      {/* === 3D GLOBE === */}
+      <Suspense fallback={null}>
+        <HolographicGlobe />
+      </Suspense>
+
+      {/* === ATMOSPHERE OVERLAYS === */}
+
+      {/* Top vignette - subtle darkening */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%)",
+          background: "linear-gradient(180deg, rgba(5, 5, 7, 0.3) 0%, transparent 30%)",
         }}
       />
 
-      {/* Content */}
+      {/* Grid pattern - very subtle */}
+      <div
+        className="absolute inset-0 opacity-[0.015]"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+        }}
+      />
+
+      {/* === CONTENT === */}
       <motion.div
-        className="container-custom relative z-10"
+        className="container mx-auto px-6 relative z-10"
         style={{ y: contentY, opacity }}
       >
         <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/20 bg-accent/5 backdrop-blur-sm mb-8"
-          >
-            <Sparkles className="w-4 h-4 text-accent" />
-            <span className="text-sm text-text-secondary">
-              Trusted Financial Guidance Since {siteConfig.foundedYear}
-            </span>
-          </motion.div>
-
-          {/* Main headline */}
-          <motion.div
+          {/* Main headline - strong contrast */}
+          <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg"
           >
-            <h1 className="text-hero-mobile md:text-hero font-bold text-white mb-6">
-              Build Wealth.
-              <br />
-              <span className="text-gradient">Protect What Matters.</span>
-            </h1>
-          </motion.div>
+            Stop Overpaying.
+            <br />
+            <span className="text-[#FF6B35]">Start Building Real Wealth.</span>
+          </motion.h1>
 
           {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-            className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed"
+            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed"
           >
-            Strategic health coverage and tax-efficient planning for
-            individuals, families, and business owners who want more from their
-            money.
+            We help individuals, families, and business owners take control of their money
+            through smarter health, life, and tax strategies.
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons - large and mobile-friendly */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+            transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Button href="/contact" size="lg">
-              Start Your Free Consultation
-              <ArrowRight className="w-5 h-5" />
-            </Button>
-            <Button
-              variant="secondary"
-              size="lg"
-              href="#calculator"
-              className="cursor-pointer"
+            {/* Primary CTA */}
+            <a
+              href="/contact"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#FF6B35] hover:bg-[#E55A2B] text-white font-semibold rounded-xl transition-all duration-300 text-lg shadow-lg shadow-[#FF6B35]/25 hover:shadow-[#FF6B35]/40"
             >
-              Plan Your Retirement
-            </Button>
-          </motion.div>
+              Get Your Free Money Audit
+              <ArrowRight className="w-5 h-5" />
+            </a>
 
-          {/* Trust indicators */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-            className="flex flex-wrap items-center justify-center gap-8 text-text-muted text-sm"
-          >
-            {["Free Consultation", "No Obligation", "Independent Advice"].map(
-              (item) => (
-                <div key={item} className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500" />
-                  <span>{item}</span>
-                </div>
-              )
-            )}
+            {/* Secondary CTA */}
+            <a
+              href="/contact"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent border-2 border-white/20 hover:border-[#FF6B35]/50 text-white font-semibold rounded-xl transition-all duration-300 text-lg hover:bg-white/5"
+            >
+              <Calendar className="w-5 h-5" />
+              Book a Consultation
+            </a>
           </motion.div>
         </div>
       </motion.div>
 
       {/* Scroll indicator */}
       <motion.a
-        href="#calculator"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-text-muted hover:text-accent transition-colors duration-300"
-        aria-label="Scroll to calculator"
+        href="#trust-bar"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-gray-500 hover:text-[#FF6B35] transition-colors duration-300"
+        aria-label="Scroll down"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.6 }}
@@ -170,6 +222,9 @@ export function HeroV2() {
           <ChevronDown className="w-8 h-8" />
         </motion.div>
       </motion.a>
+
+      {/* Bottom fade - matches new darker base */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#050507] via-[#050507]/80 to-transparent" />
     </section>
   );
 }
