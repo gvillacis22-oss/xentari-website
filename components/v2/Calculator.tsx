@@ -115,9 +115,30 @@ function PremiumSliderInput({
 
   const startEditing = () => {
     if (!allowTypedInput) return;
+    // For currency, just show the raw number without formatting
     setInputValue(value.toString());
     setIsEditing(true);
     setTimeout(() => inputRef.current?.select(), 0);
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Allow: backspace, delete, tab, escape, enter, decimal point
+    if (
+      [8, 46, 9, 27, 13, 110, 190].includes(e.keyCode) ||
+      // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+      (e.keyCode === 65 && e.ctrlKey) ||
+      (e.keyCode === 67 && e.ctrlKey) ||
+      (e.keyCode === 86 && e.ctrlKey) ||
+      (e.keyCode === 88 && e.ctrlKey) ||
+      // Allow: home, end, left, right
+      (e.keyCode >= 35 && e.keyCode <= 39)
+    ) {
+      return;
+    }
+    // Block non-numeric keys
+    if ((e.shiftKey || e.keyCode < 48 || e.keyCode > 57) && (e.keyCode < 96 || e.keyCode > 105)) {
+      e.preventDefault();
+    }
   };
 
   return (
@@ -133,19 +154,25 @@ function PremiumSliderInput({
           <input
             ref={inputRef}
             type="text"
+            inputMode="numeric"
             value={inputValue}
             onChange={handleInputChange}
             onBlur={handleInputBlur}
-            onKeyDown={handleKeyDown}
+            onKeyDown={(e) => {
+              handleKeyDown(e);
+              handleInputKeyDown(e);
+            }}
+            placeholder={`${min}-${max}`}
             className="w-32 text-right text-lg font-semibold text-white bg-background-elevated border border-accent/50 rounded-lg px-3 py-1 focus:outline-none focus:border-accent"
             autoFocus
           />
         ) : (
           <button
             onClick={startEditing}
+            title={allowTypedInput ? "Click to type a value" : undefined}
             className={cn(
-              "text-lg font-semibold text-white transition-colors px-3 py-1 rounded-lg",
-              allowTypedInput && "hover:bg-white/5 cursor-text"
+              "text-lg font-semibold text-white transition-all px-3 py-1 rounded-lg",
+              allowTypedInput && "hover:bg-white/10 hover:border hover:border-accent/30 cursor-text"
             )}
           >
             {displayValue}
