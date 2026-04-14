@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef } from "react";
 import { CalculatorInputs } from "./types";
 
 interface SimpleInputPanelProps {
@@ -30,17 +31,67 @@ function SliderField({
   suffix,
   formatValue,
 }: SliderFieldProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const displayValue = formatValue ? formatValue(value) : value.toLocaleString();
+
+  const startEditing = () => {
+    setInputValue(value.toString());
+    setIsEditing(true);
+    setTimeout(() => inputRef.current?.select(), 0);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Allow only numbers and decimal point
+    const raw = e.target.value.replace(/[^0-9.]/g, "");
+    setInputValue(raw);
+  };
+
+  const handleInputBlur = () => {
+    let newValue = parseFloat(inputValue) || min;
+    newValue = Math.max(min, Math.min(max, newValue));
+    onChange(newValue);
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleInputBlur();
+    }
+    if (e.key === "Escape") {
+      setIsEditing(false);
+    }
+  };
 
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <label className="text-sm text-text-secondary">{label}</label>
-        <span className="text-sm text-white font-medium tabular-nums">
-          {prefix}
-          {displayValue}
-          {suffix}
-        </span>
+        {isEditing ? (
+          <input
+            ref={inputRef}
+            type="text"
+            inputMode="numeric"
+            value={inputValue}
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
+            onKeyDown={handleKeyDown}
+            className="w-24 text-right text-sm text-white font-medium bg-background-elevated border border-accent/50 rounded px-2 py-1 focus:outline-none focus:border-accent"
+            autoFocus
+          />
+        ) : (
+          <button
+            onClick={startEditing}
+            title="Click to type a value"
+            className="text-sm text-white font-medium tabular-nums px-2 py-1 rounded hover:bg-white/10 hover:border hover:border-accent/30 cursor-text transition-all"
+          >
+            {prefix}
+            {displayValue}
+            {suffix}
+          </button>
+        )}
       </div>
       <input
         type="range"
@@ -119,7 +170,7 @@ export function SimpleInputPanel({ inputs, onInputChange }: SimpleInputPanelProp
           value={inputs.monthlyContribution}
           onChange={(v) => onInputChange({ monthlyContribution: v })}
           min={0}
-          max={5000}
+          max={10000}
           step={100}
           prefix="$"
         />
