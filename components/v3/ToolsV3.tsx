@@ -1,25 +1,25 @@
 "use client";
 
-import { Calculator, Shield, PiggyBank, ArrowRight } from "lucide-react";
+import { Calculator, TrendingUp, TrendingDown, ArrowRight } from "lucide-react";
 
 const tools = [
   {
     icon: Calculator,
     title: "Retirement Calculator",
-    description: "See how your savings could grow over time",
+    description: "Simple projections for your retirement savings growth",
     href: "#calculator",
   },
   {
-    icon: Shield,
-    title: "Coverage Tool",
-    description: "Find out if you have the right protection",
-    href: "#",
+    icon: TrendingUp,
+    title: "Advanced Calculator",
+    description: "Goal seeking, phased contributions, and detailed planning",
+    href: "/calculator",
   },
   {
-    icon: PiggyBank,
-    title: "Tax Savings Tool",
-    description: "Discover potential tax optimization strategies",
-    href: "#",
+    icon: TrendingDown,
+    title: "IUL Distribution Calculator",
+    description: "See how early withdrawals impact your retirement balance",
+    href: "/iul-calculator",
   },
 ];
 
