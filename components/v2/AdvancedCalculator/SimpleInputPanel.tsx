@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
 import { CalculatorInputs } from "./types";
+import { cn } from "@/lib/utils";
 
 interface SimpleInputPanelProps {
   inputs: CalculatorInputs;
@@ -17,7 +17,6 @@ interface SliderFieldProps {
   step?: number;
   prefix?: string;
   suffix?: string;
-  formatValue?: (value: number) => string;
 }
 
 function SliderField({
@@ -29,68 +28,44 @@ function SliderField({
   step = 1,
   prefix,
   suffix,
-  formatValue,
 }: SliderFieldProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const displayValue = formatValue ? formatValue(value) : value.toLocaleString();
-
-  const startEditing = () => {
-    setInputValue(value.toString());
-    setIsEditing(true);
-    setTimeout(() => inputRef.current?.select(), 0);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Allow only numbers and decimal point
-    const raw = e.target.value.replace(/[^0-9.]/g, "");
-    setInputValue(raw);
-  };
-
-  const handleInputBlur = () => {
-    let newValue = parseFloat(inputValue) || min;
-    newValue = Math.max(min, Math.min(max, newValue));
-    onChange(newValue);
-    setIsEditing(false);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleInputBlur();
-    }
-    if (e.key === "Escape") {
-      setIsEditing(false);
-    }
-  };
-
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <div className="flex items-center justify-between">
         <label className="text-sm text-text-secondary">{label}</label>
-        {isEditing ? (
-          <input
-            ref={inputRef}
-            type="text"
-            inputMode="numeric"
-            value={inputValue}
-            onChange={handleInputChange}
-            onBlur={handleInputBlur}
-            onKeyDown={handleKeyDown}
-            className="w-24 text-right text-sm text-white font-medium bg-background-elevated border border-accent/50 rounded px-2 py-1 focus:outline-none focus:border-accent"
-            autoFocus
-          />
-        ) : (
-          <button
-            onClick={startEditing}
-            title="Click to type a value"
-            className="text-sm text-white font-medium tabular-nums px-2 py-1 rounded hover:bg-white/10 hover:border hover:border-accent/30 cursor-text transition-all"
-          >
+        <span className="text-sm text-white font-medium tabular-nums">
+          {prefix}
+          {value.toLocaleString()}
+          {suffix}
+        </span>
+      </div>
+      <div className="relative">
+        {prefix && (
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-sm">
             {prefix}
-            {displayValue}
+          </span>
+        )}
+        <input
+          type="number"
+          value={value}
+          onChange={(e) => {
+            let newValue = Number(e.target.value);
+            newValue = Math.max(min, Math.min(max, newValue));
+            onChange(newValue);
+          }}
+          min={min}
+          max={max}
+          step={step}
+          className={cn(
+            "w-full bg-background-elevated border border-white/[0.08] rounded-lg py-2.5 text-white text-right pr-3 focus:border-accent/50 focus:outline-none transition-colors",
+            prefix ? "pl-8" : "pl-3",
+            suffix ? "pr-12" : "pr-3"
+          )}
+        />
+        {suffix && (
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted text-sm">
             {suffix}
-          </button>
+          </span>
         )}
       </div>
       <input
