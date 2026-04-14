@@ -19,6 +19,7 @@ export { ServicesDetailV2 } from "./ServicesDetailV2";
 export { StrategyPillarsV2 } from "./StrategyPillarsV2";
 export { Calculator } from "./Calculator";
 export { AdvancedCalculator } from "./AdvancedCalculator";
+export { IULCalculator } from "./IULCalculator";
 export { WhyChooseUsV2 } from "./WhyChooseUsV2";
 export { ProcessV2 } from "./ProcessV2";
 export { IntakeSurvey } from "./IntakeSurvey";
